@@ -15,7 +15,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,6 +29,7 @@ public class AnnouncementService {
     private final ClassSectionRepository classSectionRepository;
     private final TeacherRepository teacherRepository;
     private final StudentRepository studentRepository;
+    private final NotificationService notificationService;
 
     public AnnouncementResponseDto createAnnouncement(CreateAnnouncementDto dto, Long teacherId) {
         // Validate class section exists
@@ -47,6 +50,25 @@ public class AnnouncementService {
         announcement.setExpiresAt(dto.getExpiresAt());
 
         announcement = announcementRepository.save(announcement);
+
+        // Notify all students in the class section
+        List<Student> students = studentRepository.findByClassSectionId(classSection.getId());
+        for (Student student : students) {
+            if (student.getIsActive()) {
+                Map<String, Object> data = new HashMap<>();
+                data.put("announcementId", announcement.getId());
+                data.put("classSectionId", classSection.getId());
+                
+                notificationService.createNotification(
+                    student.getId(),
+                    "STUDENT",
+                    com.school.erp.domain.enums.NotificationType.ANNOUNCEMENT,
+                    announcement.getTitle(),
+                    announcement.getMessage(),
+                    data
+                );
+            }
+        }
 
         return mapToResponseDto(announcement);
     }

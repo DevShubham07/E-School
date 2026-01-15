@@ -5,14 +5,18 @@ import com.school.erp.domain.entity.Exam;
 import com.school.erp.domain.entity.Teacher;
 import com.school.erp.dto.CreateExamDto;
 import com.school.erp.dto.ExamResponseDto;
+import com.school.erp.domain.entity.Student;
 import com.school.erp.repository.ClassSectionRepository;
 import com.school.erp.repository.ExamRepository;
+import com.school.erp.repository.StudentRepository;
 import com.school.erp.repository.TeacherRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,6 +27,8 @@ public class ExamService {
     private final ExamRepository examRepository;
     private final ClassSectionRepository classSectionRepository;
     private final TeacherRepository teacherRepository;
+    private final StudentRepository studentRepository;
+    private final NotificationService notificationService;
 
     public ExamResponseDto createExam(CreateExamDto dto, Long teacherId) {
         // Validate class section exists
@@ -43,6 +49,27 @@ public class ExamService {
         exam.setCreatedByTeacher(teacher);
 
         exam = examRepository.save(exam);
+
+        // Notify all students in the class section
+        List<Student> students = studentRepository.findByClassSectionId(classSection.getId());
+        for (Student student : students) {
+            if (student.getIsActive()) {
+                Map<String, Object> data = new HashMap<>();
+                data.put("examId", exam.getId());
+                data.put("classSectionId", classSection.getId());
+                data.put("examDate", exam.getExamDate().toString());
+                
+                notificationService.createNotification(
+                    student.getId(),
+                    "STUDENT",
+                    com.school.erp.domain.enums.NotificationType.EXAM,
+                    "New Exam Scheduled",
+                    String.format("New exam '%s' for %s has been scheduled on %s", 
+                        exam.getName(), exam.getSubject(), exam.getExamDate()),
+                    data
+                );
+            }
+        }
 
         return mapToExamResponseDto(exam);
     }

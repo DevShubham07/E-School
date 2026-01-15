@@ -14,7 +14,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,6 +27,7 @@ public class ComplaintService {
     private final ComplaintRepository complaintRepository;
     private final StudentRepository studentRepository;
     private final TeacherRepository teacherRepository;
+    private final NotificationService notificationService;
 
     public ComplaintResponseDto createComplaint(CreateComplaintDto dto, Long teacherId) {
         // Validate student exists
@@ -58,8 +61,26 @@ public class ComplaintService {
             .orElseThrow(() -> new IllegalArgumentException("Complaint not found with id: " + complaintId));
 
         // Update status
+        ComplaintStatus oldStatus = complaint.getStatus();
         complaint.setStatus(dto.getStatus());
         complaint = complaintRepository.save(complaint);
+
+        // Notify student if status changed
+        if (!oldStatus.equals(dto.getStatus())) {
+            Map<String, Object> data = new HashMap<>();
+            data.put("complaintId", complaint.getId());
+            data.put("status", dto.getStatus().toString());
+            
+            notificationService.createNotification(
+                complaint.getStudent().getId(),
+                "STUDENT",
+                com.school.erp.domain.enums.NotificationType.COMPLAINT,
+                "Complaint Status Updated",
+                String.format("Your complaint '%s' status has been updated to %s", 
+                    complaint.getTitle(), dto.getStatus()),
+                data
+            );
+        }
 
         return mapToResponseDto(complaint);
     }

@@ -1,5 +1,14 @@
 package com.school.erp.service;
 
+import java.time.Instant;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.school.erp.domain.entity.ClassSection;
 import com.school.erp.domain.entity.Homework;
 import com.school.erp.domain.entity.HomeworkSubmission;
@@ -15,13 +24,8 @@ import com.school.erp.repository.HomeworkRepository;
 import com.school.erp.repository.HomeworkSubmissionRepository;
 import com.school.erp.repository.StudentRepository;
 import com.school.erp.repository.TeacherRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
-import java.util.List;
-import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +37,7 @@ public class HomeworkService {
     private final ClassSectionRepository classSectionRepository;
     private final TeacherRepository teacherRepository;
     private final StudentRepository studentRepository;
+    private final NotificationService notificationService;
 
     public HomeworkResponseDto createHomework(CreateHomeworkDto dto, Long teacherId) {
         // Validate class section exists
@@ -54,6 +59,27 @@ public class HomeworkService {
         homework.setAssignedByTeacher(teacher);
 
         homework = homeworkRepository.save(homework);
+
+        // Notify all students in the class section
+        List<Student> students = studentRepository.findByClassSectionId(classSection.getId());
+        for (Student student : students) {
+            if (student.getIsActive()) {
+                Map<String, Object> data = new HashMap<>();
+                data.put("homeworkId", homework.getId());
+                data.put("classSectionId", classSection.getId());
+                data.put("dueDate", homework.getDueDate().toString());
+                
+                notificationService.createNotification(
+                    student.getId(),
+                    "STUDENT",
+                    com.school.erp.domain.enums.NotificationType.HOMEWORK,
+                    "New Homework Assignment",
+                    String.format("New homework '%s' has been assigned for %s. Due date: %s", 
+                        homework.getTitle(), homework.getSubject(), homework.getDueDate()),
+                    data
+                );
+            }
+        }
 
         return mapToHomeworkResponseDto(homework);
     }
