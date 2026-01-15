@@ -39,3 +39,19 @@ logging:
 jwt:
   secret: SchoolErpSecretKeyForJWTTokenGenerationMustBeAtLeast256BitsLongForProductionUse
   expiration-minutes: 600
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: noreply.eschool365@gmail.com
+    password: yuorihbubvnrnagk
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
