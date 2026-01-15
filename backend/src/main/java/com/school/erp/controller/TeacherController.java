@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,18 +28,21 @@ public class TeacherController {
     private final TeacherService teacherService;
 
     @PostMapping
+    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<Teacher> create(@Valid @RequestBody Teacher teacher) {
         Teacher created = teacherService.create(teacher);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<List<Teacher>> getAll() {
         List<Teacher> teachers = teacherService.findAll();
         return ResponseEntity.ok(teachers);
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<Teacher> getById(@PathVariable Long id) {
         return teacherService.findById(id)
             .map(ResponseEntity::ok)
@@ -46,6 +50,7 @@ public class TeacherController {
     }
 
     @GetMapping("/employee-code/{employeeCode}")
+    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<Teacher> getByEmployeeCode(@PathVariable String employeeCode) {
         return teacherService.findByEmployeeCode(employeeCode)
             .map(ResponseEntity::ok)
@@ -53,6 +58,7 @@ public class TeacherController {
     }
 
     @GetMapping("/email/{email}")
+    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<Teacher> getByEmail(@PathVariable String email) {
         return teacherService.findByEmail(email)
             .map(ResponseEntity::ok)
@@ -60,6 +66,7 @@ public class TeacherController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<Teacher> update(
             @PathVariable Long id,
             @Valid @RequestBody Teacher teacher) {
@@ -72,6 +79,7 @@ public class TeacherController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         try {
             teacherService.deleteById(id);

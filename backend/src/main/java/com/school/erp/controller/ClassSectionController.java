@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,18 +28,21 @@ public class ClassSectionController {
     private final ClassSectionService classSectionService;
 
     @PostMapping
+    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<ClassSection> create(@Valid @RequestBody ClassSection classSection) {
         ClassSection created = classSectionService.create(classSection);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<List<ClassSection>> getAll() {
         List<ClassSection> classSections = classSectionService.findAll();
         return ResponseEntity.ok(classSections);
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<ClassSection> getById(@PathVariable Long id) {
         return classSectionService.findById(id)
             .map(ResponseEntity::ok)
@@ -46,6 +50,7 @@ public class ClassSectionController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<ClassSection> update(
             @PathVariable Long id,
             @Valid @RequestBody ClassSection classSection) {
@@ -58,6 +63,7 @@ public class ClassSectionController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         try {
             classSectionService.deleteById(id);

@@ -25,20 +25,16 @@ spring:
     enabled: true
     baseline-on-migrate: true
     locations: classpath:db/migration
-  
-  security:
-    user:
-      name: admin
-      password: admin
 
 server:
   port: 8080
 
 logging:
   level:
-    org.springframework.security: DEBUG
-    org.hibernate.SQL: DEBUG
-    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.springframework.security: INFO
+    org.hibernate.SQL: INFO
+    org.hibernate.type.descriptor.sql.BasicBinder: INFO
+    com.school.erp: DEBUG
 
 jwt:
   secret: SchoolErpSecretKeyForJWTTokenGenerationMustBeAtLeast256BitsLongForProductionUse
