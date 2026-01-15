@@ -16,7 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,6 +30,7 @@ public class MarksService {
     private final ExamRepository examRepository;
     private final StudentRepository studentRepository;
     private final TeacherRepository teacherRepository;
+    private final NotificationService notificationService;
 
     public MarksResponseDto createOrUpdateMarks(CreateMarksDto dto, Long teacherId) {
         // Validate exam exists (with class section loaded)
@@ -75,6 +78,30 @@ public class MarksService {
             marks.setGradedByTeacher(teacher);
             marks = marksRepository.save(marks);
         }
+
+        // Notify student about marks
+        Map<String, Object> data = new HashMap<>();
+        data.put("marksId", marks.getId());
+        data.put("examId", exam.getId());
+        data.put("examName", exam.getName());
+        data.put("marksObtained", marks.getMarksObtained().toString());
+        data.put("maxMarks", marks.getMaxMarks().toString());
+        
+        BigDecimal percentage = marks.getMarksObtained()
+            .divide(marks.getMaxMarks(), 4, RoundingMode.HALF_UP)
+            .multiply(new BigDecimal("100"))
+            .setScale(2, RoundingMode.HALF_UP);
+        data.put("percentage", percentage.toString());
+        
+        notificationService.createNotification(
+            student.getId(),
+            "STUDENT",
+            com.school.erp.domain.enums.NotificationType.MARKS,
+            "Marks Published",
+            String.format("Your marks for %s (%s) have been published. You scored %.2f%%", 
+                exam.getName(), exam.getSubject(), percentage.doubleValue()),
+            data
+        );
 
         return mapToMarksResponseDto(marks);
     }
