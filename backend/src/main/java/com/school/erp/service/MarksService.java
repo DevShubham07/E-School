@@ -30,12 +30,12 @@ public class MarksService {
     private final TeacherRepository teacherRepository;
 
     public MarksResponseDto createOrUpdateMarks(CreateMarksDto dto, Long teacherId) {
-        // Validate exam exists
-        Exam exam = examRepository.findById(dto.getExamId())
+        // Validate exam exists (with class section loaded)
+        Exam exam = examRepository.findByIdWithClassSection(dto.getExamId())
             .orElseThrow(() -> new IllegalArgumentException("Exam not found with id: " + dto.getExamId()));
 
-        // Validate student exists
-        Student student = studentRepository.findById(dto.getStudentId())
+        // Validate student exists (with class section loaded)
+        Student student = studentRepository.findByIdWithClassSection(dto.getStudentId())
             .orElseThrow(() -> new IllegalArgumentException("Student not found with id: " + dto.getStudentId()));
 
         // Validate student belongs to the exam's class section

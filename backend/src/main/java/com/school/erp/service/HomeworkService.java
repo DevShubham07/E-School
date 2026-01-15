@@ -60,14 +60,14 @@ public class HomeworkService {
 
     @Transactional(readOnly = true)
     public HomeworkResponseDto getHomeworkById(Long homeworkId) {
-        Homework homework = homeworkRepository.findById(homeworkId)
+        Homework homework = homeworkRepository.findByIdWithRelations(homeworkId)
             .orElseThrow(() -> new IllegalArgumentException("Homework not found with id: " + homeworkId));
         return mapToHomeworkResponseDto(homework);
     }
 
     @Transactional(readOnly = true)
     public List<HomeworkResponseDto> getHomeworksByClassSection(Long classSectionId) {
-        List<Homework> homeworks = homeworkRepository.findByClassSectionId(classSectionId);
+        List<Homework> homeworks = homeworkRepository.findByClassSectionIdWithRelations(classSectionId);
         return homeworks.stream()
             .map(this::mapToHomeworkResponseDto)
             .collect(Collectors.toList());
@@ -83,7 +83,7 @@ public class HomeworkService {
             throw new IllegalArgumentException("Student is not assigned to any class section");
         }
 
-        List<Homework> homeworks = homeworkRepository.findByClassSectionId(student.getClassSection().getId());
+        List<Homework> homeworks = homeworkRepository.findByClassSectionIdWithRelations(student.getClassSection().getId());
         return homeworks.stream()
             .map(this::mapToHomeworkResponseDto)
             .collect(Collectors.toList());

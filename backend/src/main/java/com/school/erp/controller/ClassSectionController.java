@@ -1,6 +1,7 @@
 package com.school.erp.controller;
 
 import com.school.erp.domain.entity.ClassSection;
+import com.school.erp.dto.UpdateClassSectionDto;
 import com.school.erp.service.ClassSectionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -53,12 +54,12 @@ public class ClassSectionController {
     @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<ClassSection> update(
             @PathVariable Long id,
-            @Valid @RequestBody ClassSection classSection) {
+            @Valid @RequestBody UpdateClassSectionDto dto) {
         try {
-            ClassSection updated = classSectionService.update(id, classSection);
+            ClassSection updated = classSectionService.update(id, dto);
             return ResponseEntity.ok(updated);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.badRequest().build();
         }
     }
 

@@ -339,7 +339,7 @@ JWT_TOKEN="your_jwt_token_here"
 
 #### Request OTP (Teacher)
 ```bash
-curl -X POST "${BASE_URL}/auth/request-otp" \
+curl -X POST "{{BASE_URL}}/auth/request-otp" \
   -H "Content-Type: application/json" \
   -d '{
     "phone": "9876543210"
@@ -348,7 +348,7 @@ curl -X POST "${BASE_URL}/auth/request-otp" \
 
 #### Request OTP (Student)
 ```bash
-curl -X POST "${BASE_URL}/auth/request-otp" \
+curl -X POST "{{BASE_URL}}/auth/request-otp" \
   -H "Content-Type: application/json" \
   -d '{
     "phone": "9876543301"
@@ -358,7 +358,7 @@ curl -X POST "${BASE_URL}/auth/request-otp" \
 #### Verify OTP and Get JWT Token
 ```bash
 # Check console logs for OTP, then use it here
-curl -X POST "${BASE_URL}/auth/verify-otp" \
+curl -X POST "{{BASE_URL}}/auth/verify-otp" \
   -H "Content-Type: application/json" \
   -d '{
     "phone": "9876543210",
@@ -382,9 +382,9 @@ curl -X POST "${BASE_URL}/auth/verify-otp" \
 
 #### Create Class Section
 ```bash
-curl -X POST "${BASE_URL}/api/class-sections" \
+curl -X POST "{{BASE_URL}}/api/class-sections" \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer ${JWT_TOKEN}" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}" \
   -d '{
     "className": "Class 11",
     "sectionName": "A"
@@ -393,21 +393,21 @@ curl -X POST "${BASE_URL}/api/class-sections" \
 
 #### Get All Class Sections
 ```bash
-curl -X GET "${BASE_URL}/api/class-sections" \
-  -H "Authorization: Bearer ${JWT_TOKEN}"
+curl -X GET "{{BASE_URL}}/api/class-sections" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}"
 ```
 
 #### Get Class Section by ID
 ```bash
-curl -X GET "${BASE_URL}/api/class-sections/1" \
-  -H "Authorization: Bearer ${JWT_TOKEN}"
+curl -X GET "{{BASE_URL}}/api/class-sections/1" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}"
 ```
 
 #### Update Class Section
 ```bash
-curl -X PUT "${BASE_URL}/api/class-sections/1" \
+curl -X PUT "{{BASE_URL}}/api/class-sections/1" \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer ${JWT_TOKEN}" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}" \
   -d '{
     "className": "Class 11",
     "sectionName": "B"
@@ -416,8 +416,8 @@ curl -X PUT "${BASE_URL}/api/class-sections/1" \
 
 #### Delete Class Section
 ```bash
-curl -X DELETE "${BASE_URL}/api/class-sections/1" \
-  -H "Authorization: Bearer ${JWT_TOKEN}"
+curl -X DELETE "{{BASE_URL}}/api/class-sections/1" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}"
 ```
 
 ---
@@ -426,9 +426,9 @@ curl -X DELETE "${BASE_URL}/api/class-sections/1" \
 
 #### Create Teacher
 ```bash
-curl -X POST "${BASE_URL}/api/teachers" \
+curl -X POST "{{BASE_URL}}/api/teachers" \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer ${JWT_TOKEN}" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}" \
   -d '{
     "employeeCode": "T009",
     "name": "New Teacher",
@@ -441,33 +441,33 @@ curl -X POST "${BASE_URL}/api/teachers" \
 
 #### Get All Teachers
 ```bash
-curl -X GET "${BASE_URL}/api/teachers" \
-  -H "Authorization: Bearer ${JWT_TOKEN}"
+curl -X GET "{{BASE_URL}}/api/teachers" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}"
 ```
 
 #### Get Teacher by ID
 ```bash
-curl -X GET "${BASE_URL}/api/teachers/1" \
-  -H "Authorization: Bearer ${JWT_TOKEN}"
+curl -X GET "{{BASE_URL}}/api/teachers/1" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}"
 ```
 
 #### Get Teacher by Employee Code
 ```bash
-curl -X GET "${BASE_URL}/api/teachers/employee-code/T001" \
-  -H "Authorization: Bearer ${JWT_TOKEN}"
+curl -X GET "{{BASE_URL}}/api/teachers/employee-code/T001" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}"
 ```
 
 #### Get Teacher by Email
 ```bash
-curl -X GET "${BASE_URL}/api/teachers/email/john.smith@school.com" \
-  -H "Authorization: Bearer ${JWT_TOKEN}"
+curl -X GET "{{BASE_URL}}/api/teachers/email/john.smith@school.com" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}"
 ```
 
 #### Update Teacher
 ```bash
-curl -X PUT "${BASE_URL}/api/teachers/1" \
+curl -X PUT "{{BASE_URL}}/api/teachers/1" \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer ${JWT_TOKEN}" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}" \
   -d '{
     "employeeCode": "T001",
     "name": "John Smith Updated",
@@ -480,8 +480,8 @@ curl -X PUT "${BASE_URL}/api/teachers/1" \
 
 #### Delete Teacher
 ```bash
-curl -X DELETE "${BASE_URL}/api/teachers/1" \
-  -H "Authorization: Bearer ${JWT_TOKEN}"
+curl -X DELETE "{{BASE_URL}}/api/teachers/1" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}"
 ```
 
 ---
@@ -490,9 +490,9 @@ curl -X DELETE "${BASE_URL}/api/teachers/1" \
 
 #### Create Student
 ```bash
-curl -X POST "${BASE_URL}/api/students" \
+curl -X POST "{{BASE_URL}}/api/students" \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer ${JWT_TOKEN}" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}" \
   -d '{
     "admissionNumber": "ADM036",
     "name": "New Student",
@@ -508,39 +508,39 @@ curl -X POST "${BASE_URL}/api/students" \
 
 #### Get All Students
 ```bash
-curl -X GET "${BASE_URL}/api/students" \
-  -H "Authorization: Bearer ${JWT_TOKEN}"
+curl -X GET "{{BASE_URL}}/api/students" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}"
 ```
 
 #### Get Students by Class Section
 ```bash
-curl -X GET "${BASE_URL}/api/students?classSectionId=1" \
-  -H "Authorization: Bearer ${JWT_TOKEN}"
+curl -X GET "{{BASE_URL}}/api/students?classSectionId=1" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}"
 ```
 
 #### Get Active Students Only
 ```bash
-curl -X GET "${BASE_URL}/api/students?isActive=true" \
-  -H "Authorization: Bearer ${JWT_TOKEN}"
+curl -X GET "{{BASE_URL}}/api/students?isActive=true" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}"
 ```
 
 #### Get Student by ID
 ```bash
-curl -X GET "${BASE_URL}/api/students/1" \
-  -H "Authorization: Bearer ${JWT_TOKEN}"
+curl -X GET "{{BASE_URL}}/api/students/1" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}"
 ```
 
 #### Get Student by Admission Number
 ```bash
-curl -X GET "${BASE_URL}/api/students/admission-number/ADM001" \
-  -H "Authorization: Bearer ${JWT_TOKEN}"
+curl -X GET "{{BASE_URL}}/api/students/admission-number/ADM001" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}"
 ```
 
 #### Update Student
 ```bash
-curl -X PUT "${BASE_URL}/api/students/1" \
+curl -X PUT "{{BASE_URL}}/api/students/1" \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer ${JWT_TOKEN}" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}" \
   -d '{
     "admissionNumber": "ADM001",
     "name": "Alice Williams Updated",
@@ -553,9 +553,9 @@ curl -X PUT "${BASE_URL}/api/students/1" \
 
 #### Assign Student to Class Section
 ```bash
-curl -X POST "${BASE_URL}/api/students/1/assign-class" \
+curl -X POST "{{BASE_URL}}/api/students/1/assign-class" \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer ${JWT_TOKEN}" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}" \
   -d '{
     "classSectionId": 2
   }'
@@ -563,20 +563,20 @@ curl -X POST "${BASE_URL}/api/students/1/assign-class" \
 
 #### Activate Student
 ```bash
-curl -X PUT "${BASE_URL}/api/students/1/activate" \
-  -H "Authorization: Bearer ${JWT_TOKEN}"
+curl -X PUT "{{BASE_URL}}/api/students/1/activate" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}"
 ```
 
 #### Deactivate Student
 ```bash
-curl -X PUT "${BASE_URL}/api/students/1/deactivate" \
-  -H "Authorization: Bearer ${JWT_TOKEN}"
+curl -X PUT "{{BASE_URL}}/api/students/1/deactivate" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}"
 ```
 
 #### Delete Student
 ```bash
-curl -X DELETE "${BASE_URL}/api/students/1" \
-  -H "Authorization: Bearer ${JWT_TOKEN}"
+curl -X DELETE "{{BASE_URL}}/api/students/1" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}"
 ```
 
 ---
@@ -585,9 +585,9 @@ curl -X DELETE "${BASE_URL}/api/students/1" \
 
 #### Create Attendance Session
 ```bash
-curl -X POST "${BASE_URL}/attendance/session" \
+curl -X POST "{{BASE_URL}}/attendance/session" \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer ${JWT_TOKEN}" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}" \
   -d '{
     "attendanceDate": "2024-01-15",
     "classSectionId": 1
@@ -596,9 +596,9 @@ curl -X POST "${BASE_URL}/attendance/session" \
 
 #### Mark Attendance
 ```bash
-curl -X POST "${BASE_URL}/attendance/mark" \
+curl -X POST "{{BASE_URL}}/attendance/mark" \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer ${JWT_TOKEN}" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}" \
   -d '{
     "attendanceSessionId": 1,
     "records": [
@@ -620,14 +620,14 @@ curl -X POST "${BASE_URL}/attendance/mark" \
 
 #### Get Attendance Session
 ```bash
-curl -X GET "${BASE_URL}/attendance/session/1" \
-  -H "Authorization: Bearer ${JWT_TOKEN}"
+curl -X GET "{{BASE_URL}}/attendance/session/1" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}"
 ```
 
 #### Get My Attendance (Student)
 ```bash
-curl -X GET "${BASE_URL}/attendance/my" \
-  -H "Authorization: Bearer ${JWT_TOKEN}"
+curl -X GET "{{BASE_URL}}/attendance/my" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}"
 ```
 
 ---
@@ -636,9 +636,9 @@ curl -X GET "${BASE_URL}/attendance/my" \
 
 #### Create Homework
 ```bash
-curl -X POST "${BASE_URL}/homework" \
+curl -X POST "{{BASE_URL}}/homework" \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer ${JWT_TOKEN}" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}" \
   -d '{
     "title": "Math Assignment Chapter 5",
     "description": "Complete exercises 1-10 from Chapter 5",
@@ -650,40 +650,32 @@ curl -X POST "${BASE_URL}/homework" \
 
 #### Get Homework by ID
 ```bash
-curl -X GET "${BASE_URL}/homework/1" \
-  -H "Authorization: Bearer ${JWT_TOKEN}"
+curl -X GET "{{BASE_URL}}/homework/1" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}"
 ```
 
 #### Get Homeworks by Class Section
 ```bash
-curl -X GET "${BASE_URL}/homework/class/1" \
-  -H "Authorization: Bearer ${JWT_TOKEN}"
+curl -X GET "{{BASE_URL}}/homework/class/1" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}"
 ```
 
 #### Update Homework
 ```bash
-curl -X PUT "${BASE_URL}/homework/1" \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer ${JWT_TOKEN}" \
-  -d '{
-    "title": "Math Assignment Chapter 5 - Updated",
-    "description": "Complete exercises 1-15 from Chapter 5",
-    "subject": "Mathematics",
-    "dueDate": "2024-01-25"
-  }'
+
 ```
 
 #### Delete Homework
 ```bash
-curl -X DELETE "${BASE_URL}/homework/1" \
-  -H "Authorization: Bearer ${JWT_TOKEN}"
+curl -X DELETE "{{BASE_URL}}/homework/1" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}"
 ```
 
 #### Submit Homework (Student)
 ```bash
-curl -X POST "${BASE_URL}/homework/submit" \
+curl -X POST "{{BASE_URL}}/homework/submit" \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer ${JWT_TOKEN}" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}" \
   -d '{
     "homeworkId": 1,
     "submissionText": "I have completed all exercises. Here are my answers...",
@@ -693,20 +685,20 @@ curl -X POST "${BASE_URL}/homework/submit" \
 
 #### Get My Homeworks (Student)
 ```bash
-curl -X GET "${BASE_URL}/homework/my" \
-  -H "Authorization: Bearer ${JWT_TOKEN}"
+curl -X GET "{{BASE_URL}}/homework/my" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}"
 ```
 
 #### Get My Submissions (Student)
 ```bash
-curl -X GET "${BASE_URL}/homework/my-submissions" \
-  -H "Authorization: Bearer ${JWT_TOKEN}"
+curl -X GET "{{BASE_URL}}/homework/my-submissions" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}"
 ```
 
 #### Get Homework Submissions (Teacher)
 ```bash
-curl -X GET "${BASE_URL}/homework/1/submissions" \
-  -H "Authorization: Bearer ${JWT_TOKEN}"
+curl -X GET "{{BASE_URL}}/homework/1/submissions" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}"
 ```
 
 ---
@@ -715,9 +707,9 @@ curl -X GET "${BASE_URL}/homework/1/submissions" \
 
 #### Create Exam
 ```bash
-curl -X POST "${BASE_URL}/exams" \
+curl -X POST "{{BASE_URL}}/exams" \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer ${JWT_TOKEN}" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}" \
   -d '{
     "name": "Mid-Term Exam",
     "subject": "Mathematics",
@@ -728,14 +720,14 @@ curl -X POST "${BASE_URL}/exams" \
 
 #### Get Exam by ID
 ```bash
-curl -X GET "${BASE_URL}/exams/1" \
-  -H "Authorization: Bearer ${JWT_TOKEN}"
+curl -X GET "{{BASE_URL}}/exams/1" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}"
 ```
 
 #### Get Exams by Class Section
 ```bash
-curl -X GET "${BASE_URL}/exams/class/1" \
-  -H "Authorization: Bearer ${JWT_TOKEN}"
+curl -X GET "{{BASE_URL}}/exams/class/1" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}"
 ```
 
 ---
@@ -744,9 +736,9 @@ curl -X GET "${BASE_URL}/exams/class/1" \
 
 #### Create or Update Marks
 ```bash
-curl -X POST "${BASE_URL}/marks" \
+curl -X POST "{{BASE_URL}}/marks" \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer ${JWT_TOKEN}" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}" \
   -d '{
     "examId": 1,
     "studentId": 1,
@@ -757,14 +749,14 @@ curl -X POST "${BASE_URL}/marks" \
 
 #### Get Marks by Exam
 ```bash
-curl -X GET "${BASE_URL}/marks/exam/1" \
-  -H "Authorization: Bearer ${JWT_TOKEN}"
+curl -X GET "{{BASE_URL}}/marks/exam/1" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}"
 ```
 
 #### Get My Marks (Student)
 ```bash
-curl -X GET "${BASE_URL}/marks/my" \
-  -H "Authorization: Bearer ${JWT_TOKEN}"
+curl -X GET "{{BASE_URL}}/marks/my" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}"
 ```
 
 ---
@@ -773,9 +765,9 @@ curl -X GET "${BASE_URL}/marks/my" \
 
 #### Create Timetable Entry (Coordinator Only)
 ```bash
-curl -X POST "${BASE_URL}/timetable" \
+curl -X POST "{{BASE_URL}}/timetable" \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer ${JWT_TOKEN}" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}" \
   -d '{
     "classSectionId": 1,
     "dayOfWeek": "MON",
@@ -787,9 +779,9 @@ curl -X POST "${BASE_URL}/timetable" \
 
 #### Update Timetable Entry (Coordinator Only)
 ```bash
-curl -X PUT "${BASE_URL}/timetable/1" \
+curl -X PUT "{{BASE_URL}}/timetable/1" \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer ${JWT_TOKEN}" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}" \
   -d '{
     "dayOfWeek": "TUE",
     "periodNumber": 2,
@@ -800,14 +792,14 @@ curl -X PUT "${BASE_URL}/timetable/1" \
 
 #### Delete Timetable Entry (Coordinator Only)
 ```bash
-curl -X DELETE "${BASE_URL}/timetable/1" \
-  -H "Authorization: Bearer ${JWT_TOKEN}"
+curl -X DELETE "{{BASE_URL}}/timetable/1" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}"
 ```
 
 #### Get Timetable by Class Section
 ```bash
-curl -X GET "${BASE_URL}/timetable/class/1" \
-  -H "Authorization: Bearer ${JWT_TOKEN}"
+curl -X GET "{{BASE_URL}}/timetable/class/1" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}"
 ```
 
 ---
@@ -816,9 +808,9 @@ curl -X GET "${BASE_URL}/timetable/class/1" \
 
 #### Create Announcement
 ```bash
-curl -X POST "${BASE_URL}/announcements" \
+curl -X POST "{{BASE_URL}}/announcements" \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer ${JWT_TOKEN}" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}" \
   -d '{
     "title": "School Holiday Notice",
     "message": "School will be closed on January 26th for Republic Day",
@@ -829,8 +821,8 @@ curl -X POST "${BASE_URL}/announcements" \
 
 #### Get My Announcements (Student)
 ```bash
-curl -X GET "${BASE_URL}/announcements/my" \
-  -H "Authorization: Bearer ${JWT_TOKEN}"
+curl -X GET "{{BASE_URL}}/announcements/my" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}"
 ```
 
 ---
@@ -839,9 +831,9 @@ curl -X GET "${BASE_URL}/announcements/my" \
 
 #### Create Complaint
 ```bash
-curl -X POST "${BASE_URL}/complaints" \
+curl -X POST "{{BASE_URL}}/complaints" \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer ${JWT_TOKEN}" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}" \
   -d '{
     "studentId": 1,
     "title": "Issue with Homework",
@@ -851,9 +843,9 @@ curl -X POST "${BASE_URL}/complaints" \
 
 #### Update Complaint Status
 ```bash
-curl -X PUT "${BASE_URL}/complaints/1/status" \
+curl -X PUT "{{BASE_URL}}/complaints/1/status" \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer ${JWT_TOKEN}" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}" \
   -d '{
     "status": "RESOLVED"
   }'
@@ -861,14 +853,14 @@ curl -X PUT "${BASE_URL}/complaints/1/status" \
 
 #### Get My Complaints (Student)
 ```bash
-curl -X GET "${BASE_URL}/complaints/my" \
-  -H "Authorization: Bearer ${JWT_TOKEN}"
+curl -X GET "{{BASE_URL}}/complaints/my" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}"
 ```
 
 #### Get Complaint by ID
 ```bash
-curl -X GET "${BASE_URL}/complaints/1" \
-  -H "Authorization: Bearer ${JWT_TOKEN}"
+curl -X GET "{{BASE_URL}}/complaints/1" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}"
 ```
 
 ---
@@ -877,9 +869,9 @@ curl -X GET "${BASE_URL}/complaints/1" \
 
 #### Upload Study Material
 ```bash
-curl -X POST "${BASE_URL}/study-material" \
+curl -X POST "{{BASE_URL}}/study-material" \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer ${JWT_TOKEN}" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}" \
   -d '{
     "title": "Chapter 5 Notes",
     "description": "Complete notes for Mathematics Chapter 5",
@@ -891,14 +883,14 @@ curl -X POST "${BASE_URL}/study-material" \
 
 #### Get My Study Materials (Student)
 ```bash
-curl -X GET "${BASE_URL}/study-material/my" \
-  -H "Authorization: Bearer ${JWT_TOKEN}"
+curl -X GET "{{BASE_URL}}/study-material/my" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}"
 ```
 
 #### Get Study Material by ID
 ```bash
-curl -X GET "${BASE_URL}/study-material/1" \
-  -H "Authorization: Bearer ${JWT_TOKEN}"
+curl -X GET "{{BASE_URL}}/study-material/1" \
+  -H "Authorization: Bearer {{JWT_TOKEN}}"
 ```
 
 ---
@@ -927,7 +919,7 @@ curl -X GET "${BASE_URL}/study-material/1" \
    ```bash
    curl -X POST "http://localhost:8080/api/class-sections" \
      -H "Content-Type: application/json" \
-     -H "Authorization: Bearer ${JWT_TOKEN}" \
+     -H "Authorization: Bearer {{JWT_TOKEN}}" \
      -d '{"className": "Class 11", "sectionName": "A"}'
    ```
 
@@ -935,7 +927,7 @@ curl -X GET "${BASE_URL}/study-material/1" \
    ```bash
    curl -X POST "http://localhost:8080/attendance/session" \
      -H "Content-Type: application/json" \
-     -H "Authorization: Bearer ${JWT_TOKEN}" \
+     -H "Authorization: Bearer {{JWT_TOKEN}}" \
      -d '{"attendanceDate": "2024-01-15", "classSectionId": 1}'
    ```
 

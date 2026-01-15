@@ -1,6 +1,7 @@
 package com.school.erp.service;
 
 import com.school.erp.domain.entity.ClassSection;
+import com.school.erp.dto.UpdateClassSectionDto;
 import com.school.erp.repository.ClassSectionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -37,22 +38,33 @@ public class ClassSectionService {
         return classSectionRepository.findById(id);
     }
 
-    public ClassSection update(Long id, ClassSection updatedClassSection) {
+    public ClassSection update(Long id, UpdateClassSectionDto dto) {
+        // Find the existing class section by ID from path variable
         ClassSection existing = classSectionRepository.findById(id)
             .orElseThrow(() -> new IllegalArgumentException("Class section not found with id: " + id));
 
-        // Check if the new combination conflicts with another record
-        Optional<ClassSection> existingWithSameName = classSectionRepository
-            .findByClassNameAndSectionName(updatedClassSection.getClassName(), updatedClassSection.getSectionName());
+        String newClassName = dto.getClassName();
+        String newSectionName = dto.getSectionName();
+
+        // If the new combination is the same as current, no need to check for conflicts
+        boolean isSameCombination = existing.getClassName().equals(newClassName) 
+            && existing.getSectionName().equals(newSectionName);
         
-        if (existingWithSameName.isPresent() && !existingWithSameName.get().getId().equals(id)) {
-            throw new IllegalArgumentException(
-                String.format("Class section with className '%s' and sectionName '%s' already exists",
-                    updatedClassSection.getClassName(), updatedClassSection.getSectionName()));
+        if (!isSameCombination) {
+            // Check if the new combination conflicts with another record
+            Optional<ClassSection> existingWithSameName = classSectionRepository
+                .findByClassNameAndSectionName(newClassName, newSectionName);
+            
+            if (existingWithSameName.isPresent() && !existingWithSameName.get().getId().equals(id)) {
+                throw new IllegalArgumentException(
+                    String.format("Class section with className '%s' and sectionName '%s' already exists",
+                        newClassName, newSectionName));
+            }
         }
 
-        existing.setClassName(updatedClassSection.getClassName());
-        existing.setSectionName(updatedClassSection.getSectionName());
+        // Update only the fields that can be changed
+        existing.setClassName(newClassName);
+        existing.setSectionName(newSectionName);
         
         return classSectionRepository.save(existing);
     }
