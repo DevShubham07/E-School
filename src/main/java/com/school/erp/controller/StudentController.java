@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +31,7 @@ public class StudentController {
     private final StudentService studentService;
 
     @PostMapping
+    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<Student> create(@Valid @RequestBody Student student) {
         Student created = studentService.create(student);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
@@ -67,6 +69,7 @@ public class StudentController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<Student> update(
             @PathVariable Long id,
             @Valid @RequestBody Student student) {
@@ -79,6 +82,7 @@ public class StudentController {
     }
 
     @PatchMapping("/{id}/assign-class-section")
+    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<Student> assignToClassSection(
             @PathVariable Long id,
             @RequestBody Map<String, Long> request) {
@@ -95,6 +99,7 @@ public class StudentController {
     }
 
     @PatchMapping("/{id}/activate")
+    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<Student> activate(@PathVariable Long id) {
         try {
             Student updated = studentService.activate(id);
@@ -105,6 +110,7 @@ public class StudentController {
     }
 
     @PatchMapping("/{id}/deactivate")
+    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<Student> deactivate(@PathVariable Long id) {
         try {
             Student updated = studentService.deactivate(id);
@@ -115,6 +121,7 @@ public class StudentController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         try {
             studentService.deleteById(id);

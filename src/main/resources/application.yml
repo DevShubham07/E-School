@@ -31,3 +31,7 @@ logging:
     org.springframework.security: DEBUG
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+jwt:
+  secret: SchoolErpSecretKeyForJWTTokenGenerationMustBeAtLeast256BitsLongForProductionUse
+  expiration-minutes: 45

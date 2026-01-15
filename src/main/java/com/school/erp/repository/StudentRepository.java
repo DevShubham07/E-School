@@ -17,4 +17,6 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     List<Student> findByClassSectionId(Long classSectionId);
 
     List<Student> findByIsActive(Boolean isActive);
+
+    Optional<Student> findByPhone(String phone);
 }

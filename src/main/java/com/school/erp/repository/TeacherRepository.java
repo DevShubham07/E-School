@@ -13,6 +13,8 @@ public interface TeacherRepository extends JpaRepository<Teacher, Long> {
 
     Optional<Teacher> findByEmail(String email);
 
+    Optional<Teacher> findByPhone(String phone);
+
     boolean existsByEmployeeCode(String employeeCode);
 
     boolean existsByEmail(String email);
