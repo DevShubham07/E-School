@@ -14,4 +14,5 @@ public class AuthResponseDto {
     private Long userId;
     private String role;
     private String phoneNumber;
+    private String email;
 }

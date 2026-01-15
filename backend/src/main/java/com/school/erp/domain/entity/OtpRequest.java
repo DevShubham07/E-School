@@ -25,8 +25,11 @@ public class OtpRequest extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 20)
+    @Column(length = 20)
     private String phoneNumber;
+
+    @Column(length = 100)
+    private String email;
 
     @Column(nullable = false, length = 255)
     private String otpHash;

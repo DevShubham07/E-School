@@ -20,11 +20,12 @@ import lombok.RequiredArgsConstructor;
 public class OtpService {
 
     private static final int OTP_LENGTH = 6;
-    private static final int OTP_VALIDITY_MINUTES = 10;
+    private static final int OTP_VALIDITY_MINUTES = 15;
     private static final int MAX_ATTEMPTS = 5;
 
     private final OtpRequestRepository otpRequestRepository;
     private final SmsService smsService;
+    private final EmailService emailService;
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     private final SecureRandom random = new SecureRandom();
 
@@ -54,10 +55,69 @@ public class OtpService {
         return otp;
     }
 
+    public String generateAndSendOtpByEmail(String email) {
+        // Invalidate previous unused OTPs for this email
+        otpRequestRepository.markAllAsUsedByEmail(email);
+
+        // Generate numeric OTP
+        String otp = generateNumericOtp();
+
+        // Hash the OTP
+        String otpHash = passwordEncoder.encode(otp);
+
+        // Create OTP request
+        OtpRequest otpRequest = new OtpRequest();
+        otpRequest.setEmail(email);
+        otpRequest.setOtpHash(otpHash);
+        otpRequest.setExpiresAt(Instant.now().plusSeconds(OTP_VALIDITY_MINUTES * 60L));
+        otpRequest.setAttemptCount(0);
+        otpRequest.setIsUsed(false);
+
+        otpRequestRepository.save(otpRequest);
+
+        // Send OTP via Email
+        emailService.sendOtp(email, otp);
+
+        return otp;
+    }
+
     public boolean verifyOtp(String phoneNumber, String otp) {
         Optional<OtpRequest> otpRequestOpt = otpRequestRepository
             .findFirstByPhoneNumberAndIsUsedFalseAndExpiresAtAfterOrderByCreatedAtDesc(
                 phoneNumber, Instant.now());
+
+        if (otpRequestOpt.isEmpty()) {
+            return false;
+        }
+
+        OtpRequest otpRequest = otpRequestOpt.get();
+
+        // Check attempt count
+        if (otpRequest.getAttemptCount() >= MAX_ATTEMPTS) {
+            otpRequest.setIsUsed(true);
+            otpRequestRepository.save(otpRequest);
+            return false;
+        }
+
+        // Verify OTP
+        boolean isValid = passwordEncoder.matches(otp, otpRequest.getOtpHash());
+
+        // Increment attempt count
+        otpRequest.setAttemptCount(otpRequest.getAttemptCount() + 1);
+
+        if (isValid) {
+            otpRequest.setIsUsed(true);
+        }
+
+        otpRequestRepository.save(otpRequest);
+
+        return isValid;
+    }
+
+    public boolean verifyOtpByEmail(String email, String otp) {
+        Optional<OtpRequest> otpRequestOpt = otpRequestRepository
+            .findFirstByEmailAndIsUsedFalseAndExpiresAtAfterOrderByCreatedAtDesc(
+                email, Instant.now());
 
         if (otpRequestOpt.isEmpty()) {
             return false;
