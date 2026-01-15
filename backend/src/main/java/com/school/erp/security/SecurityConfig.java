@@ -32,6 +32,9 @@ public class SecurityConfig {
                 .requestMatchers("/api/students/**").hasAnyRole("STUDENT", "TEACHER")
                 .requestMatchers("/api/teachers/**").hasRole("TEACHER")
                 .requestMatchers("/api/class-sections/**").hasRole("TEACHER")
+                .requestMatchers("/attendance/session/**").hasRole("TEACHER")
+                .requestMatchers("/attendance/mark").hasRole("TEACHER")
+                .requestMatchers("/attendance/my").hasAnyRole("STUDENT", "TEACHER")
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
