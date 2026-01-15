@@ -1,16 +1,18 @@
 package com.school.erp.service;
 
-import com.school.erp.domain.entity.OtpRequest;
-import com.school.erp.repository.OtpRequestRepository;
-import lombok.RequiredArgsConstructor;
+import java.security.SecureRandom;
+import java.time.Instant;
+import java.util.Optional;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.security.SecureRandom;
-import java.time.Instant;
-import java.util.Optional;
+import com.school.erp.domain.entity.OtpRequest;
+import com.school.erp.repository.OtpRequestRepository;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor

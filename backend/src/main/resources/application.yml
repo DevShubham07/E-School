@@ -44,7 +44,7 @@ jwt:
     host: smtp.gmail.com
     port: 587
     username: noreply.eschool365@gmail.com
-    password: fuckOff@69
+    password: yuorihbubvnrnagk
     properties:
       mail:
         smtp:

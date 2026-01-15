@@ -1,13 +1,14 @@
 package com.school.erp.repository;
 
-import com.school.erp.domain.entity.OtpRequest;
+import java.time.Instant;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.time.Instant;
-import java.util.Optional;
+import com.school.erp.domain.entity.OtpRequest;
 
 @Repository
 public interface OtpRequestRepository extends JpaRepository<OtpRequest, Long> {
