@@ -35,6 +35,12 @@ public class SecurityConfig {
                 .requestMatchers("/attendance/session/**").hasRole("TEACHER")
                 .requestMatchers("/attendance/mark").hasRole("TEACHER")
                 .requestMatchers("/attendance/my").hasAnyRole("STUDENT", "TEACHER")
+                .requestMatchers("/homework/class/**").hasRole("TEACHER")
+                .requestMatchers("/homework/**/submissions").hasRole("TEACHER")
+                .requestMatchers("/homework/my").hasRole("STUDENT")
+                .requestMatchers("/homework/submit").hasRole("STUDENT")
+                .requestMatchers("/homework/my-submissions").hasRole("STUDENT")
+                .requestMatchers("/homework/**").hasAnyRole("STUDENT", "TEACHER")
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
