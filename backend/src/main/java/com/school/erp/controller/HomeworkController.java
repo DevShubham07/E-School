@@ -23,7 +23,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/homework")
@@ -35,14 +37,17 @@ public class HomeworkController {
 
     @PostMapping
     @PreAuthorize("hasRole('TEACHER')")
-    public ResponseEntity<HomeworkResponseDto> createHomework(
+    public ResponseEntity<?> createHomework(
             @Valid @RequestBody CreateHomeworkDto dto,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         try {
             HomeworkResponseDto homework = homeworkService.createHomework(dto, userDetails.getUserId());
             return ResponseEntity.status(HttpStatus.CREATED).body(homework);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().build();
+            Map<String, Object> error = new HashMap<>();
+            error.put("status", HttpStatus.BAD_REQUEST.value());
+            error.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(error);
         }
     }
 

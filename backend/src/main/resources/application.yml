@@ -38,4 +38,4 @@ logging:
 
 jwt:
   secret: SchoolErpSecretKeyForJWTTokenGenerationMustBeAtLeast256BitsLongForProductionUse
-  expiration-minutes: 45
+  expiration-minutes: 600
